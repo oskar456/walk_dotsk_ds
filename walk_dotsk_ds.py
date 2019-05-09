@@ -4,7 +4,8 @@ import csv
 import time
 from hashlib import sha1
 from base64 import b32encode
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
+from operator import itemgetter
 from pathlib import Path
 import urllib.request
 import urllib.error
@@ -39,6 +40,45 @@ def read_domains_txt(domainstxt):
     )
 
 
+def write_secured_csv(
+    secureddomains,
+    outpath="domains-secured.csv",
+    domainstxt="domains.txt",
+):
+    outpath = Path(outpath)
+    domainstxt = Path(domainstxt)
+    with domainstxt.open(newline="") as inf, outpath.open("w") as outf:
+        fieldnames = next(read_domains_txt(inf)).keys()
+        inf.seek(0)
+        writer = csv.DictWriter(outf, fieldnames)
+        writer.writeheader()
+        writer.writerows(
+            r for r in read_domains_txt(inf)
+            if r.get("domena") in secureddomains
+        )
+
+
+def generate_stats(
+    securedcsv="domains-secured.csv",
+    outpath="domains-stats.csv",
+):
+    securedcsv = Path(securedcsv)
+    outpath = Path(outpath)
+    regcount = defaultdict(int)
+    with securedcsv.open(newline="") as inf:
+        reader = csv.DictReader(inf)
+        for row in reader:
+            regcount[row.get("ID reg")] += 1
+    with outpath.open("w") as outf:
+        fieldnames = ["ID reg", "count"]
+        writer = csv.writer(outf)
+        writer.writerow(fieldnames)
+        writer.writerows(
+            sorted(regcount.items(), key=itemgetter(1), reverse=True,),
+        )
+        writer.writerow(["TOTAL", sum(regcount.values())],)
+
+
 def update_domains_txt(
     url="https://sk-nic.sk/subory/domains.txt",
     path="domains.txt",
@@ -52,7 +92,7 @@ def update_domains_txt(
         )
         request.add_header("If-Modified-Since", imsheader)
     try:
-        with urllib.request.urlopen(request) as (req):
+        with urllib.request.urlopen(request) as req:
             print("Downloading domains.txt…")
             path.write_bytes(req.read())
     except urllib.error.HTTPError as e:
@@ -73,12 +113,12 @@ def update_rainbow_dict(
         and rainbowtable.stat().st_mtime > domainstxt.stat().st_mtime
     ):
         print("Reusing old rainbow table")
-        with rainbowtable.open(newline="") as (csvfile):
+        with rainbowtable.open(newline="") as csvfile:
             reader = csv.DictReader(csvfile, dialect="excel-tab")
             return OrderedDict((i.values() for i in reader))
     raindict = {get_nsec3_hash("sk"): "sk"}
     print("Computing the rainbow table…")
-    with domainstxt.open(newline="") as (inf):
+    with domainstxt.open(newline="") as inf:
         for r in read_domains_txt(inf):
             d = r["domena"]
             h = get_nsec3_hash(d)
@@ -86,7 +126,7 @@ def update_rainbow_dict(
 
     print("Sorting hashes…")
     raindict = OrderedDict(sorted(raindict.items()))
-    with rainbowtable.open("w") as (outf):
+    with rainbowtable.open("w") as outf:
         writer = csv.writer(outf, dialect="excel-tab")
         writer.writerow(["hash", "domena"])
         writer.writerows(raindict.items())
@@ -146,7 +186,8 @@ def walk_nsec3(raindict, origin="sk"):
 def main():
     update_domains_txt()
     raindict = update_rainbow_dict()
-    walk_nsec3(raindict)
+    secured = walk_nsec3(raindict)
+    write_secured_csv(secured)
 
 
 if __name__ == "__main__":
