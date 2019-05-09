@@ -6,6 +6,7 @@ script:
  - python walk_dotsk_ds.py
 deploy:
  provider: script
+ skip_cleanup: true
  script: deploy-gh-pages.sh
  on:
         branch: master

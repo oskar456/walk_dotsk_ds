@@ -1,6 +1,6 @@
 #!/bin/bash
 
-git clone --branch=gh-pages https://${GITHUB_TOKEN}@github.com/$TRAVIS_REPO_SLUG gh-pages 2>&1 > /dev/null
+git clone --branch=gh-pages https://${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages 2>&1 > /dev/null
 pushd gh-pages
 export OUTDIR="$(date +%Y-%m-%d)/"
 mkdir -p "$OUTDIR"
