@@ -188,6 +188,7 @@ def main():
     raindict = update_rainbow_dict()
     secured = walk_nsec3(raindict)
     write_secured_csv(secured)
+    generate_stats()
 
 
 if __name__ == "__main__":
