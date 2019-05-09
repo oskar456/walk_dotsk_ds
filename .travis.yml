@@ -7,7 +7,7 @@ script:
 deploy:
  provider: script
  skip_cleanup: true
- script: deploy-gh-pages.sh
+ script: bash deploy-gh-pages.sh
  on:
         branch: master
 # https://stackoverflow.com/questions/49431680/publish-releases-to-gh-pages-with-travis-without-deleting-previous-releases
