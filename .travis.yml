@@ -1,0 +1,18 @@
+language: python
+python: "3.6"
+install:
+ - pip install dnspython
+script:
+ - python walk_dotsk_ds.py
+ - export OUTDIR="deploy/$(date +%Y-%m-%d)/"
+ - mkdir -p "$OUTDIR"
+ - mv domains-secured.txt domains-secured.csv domains-stats.csv "$OUTDIR"
+deploy:
+ provider: pages
+ skip_cleanup: true
+ github_token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+ keep_history: true
+ local_dir: deploy
+ verbose: true
+ on:
+        branch: master
