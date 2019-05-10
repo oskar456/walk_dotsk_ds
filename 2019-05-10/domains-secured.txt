@@ -1,10 +1,12 @@
 absalon.sk
+abuba.sk
 asianaglobal.sk
 assettravel.sk
 astro.sk
 auto-drogeria.sk
 autodrogeria.sk
 avipro.sk
+breviar.sk
 budaj.sk
 budajova.sk
 cattery.sk
@@ -12,6 +14,7 @@ catterymanager.sk
 ceoi.sk
 creodat.sk
 datax.sk
+dcza.sk
 dennikrelax.sk
 devops.sk
 dobrakniha.sk
@@ -33,6 +36,7 @@ hudobnydestilat.sk
 huhuhu.sk
 iceweb.sk
 kamnamenu.sk
+katechezy.sk
 kbs.sk
 kewl.sk
 kingsmen.sk
@@ -55,7 +59,9 @@ mission.sk
 motus.sk
 msw.sk
 nethost.sk
+ochranamaloletych.sk
 pampeliska.sk
+pochodzazivot.sk
 privatnavinnacesta.sk
 profithunterscoin.sk
 propistour.sk
