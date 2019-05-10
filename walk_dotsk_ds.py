@@ -59,24 +59,52 @@ def write_secured_csv(
 
 
 def generate_stats(
-    securedcsv="domains-secured.csv",
+    secureddomains,
+    domainstxt="domains.txt",
     outpath="domains-stats.csv",
 ):
-    securedcsv = Path(securedcsv)
+    domainstxt = Path(domainstxt)
     outpath = Path(outpath)
-    regcount = defaultdict(int)
-    with securedcsv.open(newline="") as inf:
-        reader = csv.DictReader(inf)
-        for row in reader:
-            regcount[row.get("ID reg")] += 1
+
+    class Count():
+        secure = 0
+        insecure = 0
+
+    regcount = defaultdict(Count)
+    with domainstxt.open(newline="") as inf:
+        for row in read_domains_txt(inf):
+            if row.get("domena") in secureddomains:
+                regcount[row.get("ID reg")].secure += 1
+            else:
+                regcount[row.get("ID reg")].insecure += 1
     with outpath.open("w") as outf:
-        fieldnames = ["ID reg", "count"]
+        fieldnames = [
+            "ID reg", "secure domains", "insecure domains",
+            "percent secure",
+        ]
         writer = csv.writer(outf)
         writer.writerow(fieldnames)
         writer.writerows(
-            sorted(regcount.items(), key=itemgetter(1), reverse=True,),
+            sorted(
+                (
+                    (
+                        k, v.secure, v.insecure,
+                        round(100*v.secure/(v.secure + v.insecure), 2),
+                    )
+                    for k, v in regcount.items()
+                ),
+                key=itemgetter(1, 2),
+                reverse=True,
+            ),
         )
-        writer.writerow(["TOTAL", sum(regcount.values())],)
+        totalsecure = sum((v.secure for v in regcount.values()))
+        totalinsecure = sum((v.insecure for v in regcount.values()))
+        writer.writerow(
+            [
+                "TOTAL", totalsecure, totalinsecure,
+                round(100*totalsecure/(totalsecure + totalinsecure), 2),
+            ],
+        )
 
 
 def update_domains_txt(
@@ -109,8 +137,8 @@ def update_rainbow_dict(
     domainstxt = Path(domainstxt)
     rainbowtable = Path(rainbowtable)
     if (
-        rainbowtable.is_file()
-        and rainbowtable.stat().st_mtime > domainstxt.stat().st_mtime
+        rainbowtable.is_file() and
+        rainbowtable.stat().st_mtime > domainstxt.stat().st_mtime
     ):
         print("Reusing old rainbow table")
         with rainbowtable.open(newline="") as csvfile:
@@ -188,7 +216,7 @@ def main():
     raindict = update_rainbow_dict()
     secured = walk_nsec3(raindict)
     write_secured_csv(secured)
-    generate_stats()
+    generate_stats(secured)
 
 
 if __name__ == "__main__":
