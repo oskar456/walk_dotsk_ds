@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/1.0.3/jquery.csv.min.js"></script>
+  <title></title>
+</head>
+<body>
+  <div class="container" style="padding:10px 10px;">
+    <h1>DNSSEC-signed domain list</h1>
+	<div class="well">
+		<div class="row" id="csv-display" style="height:500px;overflow: scroll;">
+		</div>
+	</div>
+  </div>
+</body>
+</html>
+<script type="text/javascript">
+  $(document).ready(function(){
+	var data;
+	$.ajax({
+	  type: "GET",
+	  url: "2019-05-10/domains-secured.csv",
+	  dataType: "text",
+	  success: function(response)
+	  {
+		data = $.csv.toArrays(response);
+		generateHtmlTable(data);
+	  }
+	});
+	
+	function generateHtmlTable(data) {
+		var html = '<table  class="table table-condensed table-hover table-striped">';
+
+      if(typeof(data[0]) === 'undefined') {
+        return null;
+      } else {
+		$.each(data, function( index, row ) {
+		  //bind header
+		  if(index == 0) {
+			html += '<thead>';
+			html += '<tr>';
+			$.each(row, function( index, colData ) {
+				html += '<th>';
+				html += colData;
+				html += '</th>';
+			});
+			html += '</tr>';
+			html += '</thead>';
+			html += '<tbody>';
+		  } else {
+			html += '<tr>';
+			$.each(row, function( index, colData ) {
+				html += '<td>';
+				html += colData;
+				html += '</td>';
+			});
+			html += '</tr>';
+		  }
+		});
+		html += '</tbody>';
+		html += '</table>';
+		
+		$('#csv-display').append(html);
+	  }
+	}
+  });
+</script>
