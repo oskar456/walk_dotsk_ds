@@ -15,6 +15,7 @@ datax.sk
 dennikrelax.sk
 devops.sk
 dobrakniha.sk
+ecclesia.sk
 elektriker.sk
 epicfail.sk
 euro-server.sk
