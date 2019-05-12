@@ -9,12 +9,14 @@ from operator import itemgetter
 from pathlib import Path
 import urllib.request
 import urllib.error
+import random
 
 import dns.name
 from dns.rdtypes.ANY.NSEC3 import b32_normal_to_hex
 import dns.message
 import dns.query
 import dns.rdatatype
+import dns.resolver
 
 
 def digest_to_ascii(digest):
@@ -173,6 +175,10 @@ def _next_odict_item(d, key):
 
 
 def walk_nsec3(raindict, origin="sk"):
+    resolver = dns.resolver.Resolver()
+    nsset = resolver.query(f"{origin}.", dns.rdatatype.NS)
+    nameserver = random.choice([ns.target.to_text() for ns in nsset.rrset])
+    print("Using nameserver", nameserver)
     nsec3cache = dict()
     secureddomains = set()
     originhash = get_nsec3_hash(origin)
@@ -185,7 +191,7 @@ def walk_nsec3(raindict, origin="sk"):
         if h not in nsec3cache:
             reqs += 1
             q = dns.message.make_query(f"\0.{d}.", "DS", want_dnssec=True)
-            res = dns.query.tcp(q, "c.tld.sk")
+            res = dns.query.tcp(q, nameserver)
             nsec3cache.update(
                 (rrset.name.labels[0].decode("ascii").upper(), rrset[0])
                 for rrset in res.authority
