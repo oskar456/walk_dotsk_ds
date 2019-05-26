@@ -191,18 +191,20 @@ def walk_nsec3(raindict, origin="sk"):
     d = origin
     h = originhash
     print("Walking NSEC3 hashes…\n")
-    iters, reqs = 0, 0
+    iters, reqs, brokes, unknowns = 0, 0, 0, 0
     while True:
         iters += 1
         if h not in nsec3cache:
             reqs += 1
+            # print("Querying", d)
             q = dns.message.make_query(f"{d}.", "DS", want_dnssec=True)
             res = dns.query.tcp(q, nameserver)
-            nsec3cache.update(
+            ns3rr = [
                 (rrset.name.labels[0].decode("ascii").upper(), rrset[0])
                 for rrset in res.authority
                 if rrset.rdtype == dns.rdatatype.NSEC3
-            )
+            ]
+            nsec3cache.update(ns3rr)
             if [
                 rrset
                 for rrset in res.answer
@@ -213,10 +215,19 @@ def walk_nsec3(raindict, origin="sk"):
                 h = get_nsec3_hash(d)
                 _, d = _next_odict_item(raindict, h)
                 continue
+            if h not in nsec3cache and len(ns3rr) > 0:
+                newh = [k for k, v in ns3rr if k > h][0]
+                print("Broken NSEC3 chain: expected", h, "got", newh)
+                brokes += 1
+                h = newh
 
         if dict(nsec3cache[h].windows)[0][5] & 0x10:
             # this owner has a DS record
-            d = raindict.get(h, f"UNKNOWN_{h}")
+            if h in raindict:
+                d = raindict[h]
+            else:
+                d = f"UNKNOWN_{h}"
+                unknowns += 1
             print(d)
             secureddomains.add(d)
         h = digest_to_ascii(nsec3cache[h].next)
@@ -231,6 +242,8 @@ def walk_nsec3(raindict, origin="sk"):
     print("\nIterations: ", iters)
     print("DNS requests: ", reqs)
     print("DS records discovered: ", len(secureddomains))
+    print("Unknown domain names: ", unknowns)
+    print("Broken NSEC3 chain incidents: ", brokes)
     with open("domains-secured.txt", "w") as outf:
         for d in sorted(secureddomains):
             outf.write(d)
