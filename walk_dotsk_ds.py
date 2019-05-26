@@ -190,13 +190,24 @@ def walk_nsec3(raindict, origin="sk"):
         iters += 1
         if h not in nsec3cache:
             reqs += 1
-            q = dns.message.make_query(f"\0.{d}.", "DS", want_dnssec=True)
+            q = dns.message.make_query(f"{d}.", "DS", want_dnssec=True)
             res = dns.query.tcp(q, nameserver)
             nsec3cache.update(
                 (rrset.name.labels[0].decode("ascii").upper(), rrset[0])
                 for rrset in res.authority
                 if rrset.rdtype == dns.rdatatype.NSEC3
             )
+            if [
+                rrset
+                for rrset in res.answer
+                if rrset.rdtype == dns.rdatatype.DS
+            ]:
+                print(d, "discovered directly")
+                secureddomains.add(d)
+                h = get_nsec3_hash(d)
+                _, d = _next_odict_item(raindict, h)
+                continue
+
         if dict(nsec3cache[h].windows)[0][5] & 0x10:
             # this owner has a DS record
             d = raindict[h]
