@@ -174,6 +174,12 @@ def _next_odict_item(d, key):
                 return next(d.items())
 
 
+def _guess_next_domain(d, key):
+    for k, v in d.items():
+        if k > key:
+            return v
+
+
 def walk_nsec3(raindict, origin="sk"):
     resolver = dns.resolver.Resolver()
     nsset = resolver.query(f"{origin}.", dns.rdatatype.NS)
@@ -210,13 +216,17 @@ def walk_nsec3(raindict, origin="sk"):
 
         if dict(nsec3cache[h].windows)[0][5] & 0x10:
             # this owner has a DS record
-            d = raindict[h]
+            d = raindict.get(h, f"UNKNOWN_{h}")
             print(d)
             secureddomains.add(d)
         h = digest_to_ascii(nsec3cache[h].next)
         if h == originhash:
             break
-        _, d = _next_odict_item(raindict, h)
+        if h in raindict:
+            _, d = _next_odict_item(raindict, h)
+        else:
+            d = _guess_next_domain(raindict, h)
+            print("Next domain guessed:", d)
 
     print("\nIterations: ", iters)
     print("DNS requests: ", reqs)
