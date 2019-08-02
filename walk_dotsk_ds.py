@@ -198,7 +198,7 @@ def walk_nsec3(raindict, origin="sk"):
             reqs += 1
             # print("Querying", d)
             q = dns.message.make_query(f"{d}.", "DS", want_dnssec=True)
-            res = dns.query.tcp(q, nameserver)
+            res = dns.query.udp(q, nameserver)
             ns3rr = [
                 (rrset.name.labels[0].decode("ascii").upper(), rrset[0])
                 for rrset in res.authority
