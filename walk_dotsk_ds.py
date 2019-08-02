@@ -192,7 +192,7 @@ def walk_nsec3(raindict, origin="sk"):
     originhash = get_nsec3_hash(origin)
     d = origin
     h = originhash
-    print("Walking NSEC3 hashes…\n")
+    print("Walking NSEC3 hashes…\n", flush=True)
     iters, reqs, brokes, unknowns = 0, 0, 0, 0
     while True:
         iters += 1
@@ -230,7 +230,7 @@ def walk_nsec3(raindict, origin="sk"):
             else:
                 d = f"UNKNOWN_{h}"
                 unknowns += 1
-            print(d)
+            print(d, flush=True)
             secureddomains.add(d)
         h = digest_to_ascii(nsec3cache[h].next)
         if h == originhash:
