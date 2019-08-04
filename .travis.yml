@@ -1,9 +1,12 @@
 language: python
 python: "3.6"
+branches:
+ only:
+  - master
 install:
  - pip install dnspython
 script:
- - python walk_dotsk_ds.py
+ - time python walk_dotsk_ds.py
 deploy:
  provider: script
  skip_cleanup: true
