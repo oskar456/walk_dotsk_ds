@@ -597,6 +597,7 @@ brngal.sk,ZERO-0008,H342955,OK,ns1.zeroone.sk,ns2.zeroone.sk,ns3.zeroone.sk,ns4.
 brngalova.sk,ZERO-0008,H342955,OK,ns1.zeroone.sk,ns2.zeroone.sk,ns3.zeroone.sk,ns4.zeroone.sk,29.03.2020
 broker-pool.sk,ELBI-0002,UNIV-0036,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,29.07.2020
 brozphoto.sk,ELBI-0002,ELB-K3KJN6LFPE2L,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,18.08.2019
+brunes.sk,PAPE-0011,H750637,OK,ns1.brunes.cz,ns3.brunes.cz,,,25.05.2020
 bruxsafol-sv.sk,ELBI-0002,BCMA-0032-1465,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,07.03.2020
 brvniste.sk,ISKI-0001,OBEC-0318-4623,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,25.07.2020
 bscomp.sk,ELBI-0002,BSCO-0001,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,19.02.2020
@@ -1572,6 +1573,7 @@ gajdosi.sk,ISKI-0001,FORPSI-S667269,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,
 galanta.sk,ISKI-0001,H412137,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,10.06.2020
 galbavy.sk,WEBS-0001,ONEJ-0301,OK,ns1.websupport.sk,ns2.websupport.sk,ns3.websupport.sk,,31.10.2019
 galerialimes.sk,ELBI-0002,PROA-0029,OK,ns.inetadmin.eu,ns.inetadmin.cz,ns.inetadmin.sk,,21.09.2019
+galeriaumenia.sk,WEBS-0001,WS-57893,OK,ns1.websupport.sk,ns2.websupport.sk,ns3.websupport.sk,,16.07.2020
 galgabor.sk,ELBI-0002,DESI-0030-1465,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,25.10.2019
 galileo-corporation.sk,ISKI-0001,GALI-0012,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,05.08.2020
 galileocorporation.sk,ISKI-0001,GALI-0012,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,05.08.2020
@@ -2950,6 +2952,7 @@ nahaku.sk,ELBI-0002,LADI-0650-1465,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadm
 nahradaskody.sk,ELBI-0002,PRVN-0014-1465,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,15.06.2020
 nairam.sk,ELBI-0002,MARI-0113,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,28.04.2020
 naj-sperkovnice.sk,ISKI-0001,H659289,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,ns.forpsi.us,02.08.2020
+najdiservis.sk,ISKI-0001,H601191,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,18.08.2019
 najizolacie.sk,ELBI-0002,MIRO-1174-1465,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,04.10.2019
 najlepsi-darcek.sk,ISKI-0001,FORPSI-S583341,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,22.06.2020
 najletenky.sk,ELBI-0002,CEST-0040,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,03.06.2020
@@ -3824,6 +3827,7 @@ recuperoo.sk,ISKI-0001,FORPSI-S379187,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz
 recyklonia.sk,ELBI-0002,ELB-8VSGLNM4R034,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,24.01.2020
 redstyleslovakia.sk,ISKI-0001,FORPSI-S552891,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,09.07.2022
 reef.sk,ELBI-0002,PAGE-0001,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,13.11.2019
+refil.sk,ISKI-0001,MART-3231,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,ns.forpsi.us,02.12.2019
 refzbor.sk,ELBI-0002,ELB-441791WI8W10,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,11.11.2019
 regaly-regaly.sk,ISKI-0001,FORPSI-S652662,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,20.06.2020
 regalyregaly.sk,ISKI-0001,FORPSI-S652662,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,20.06.2020
@@ -3894,8 +3898,11 @@ revycar.sk,ELBI-0002,ELB-26GS6ZMXLZET,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inet
 rewindow.sk,ISKI-0001,FORPSI-S260257,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,22.06.2020
 rezanareklama.sk,ELBI-0002,VNET-0001-1465,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,26.08.2019
 rezedova.sk,ELBI-0002,VNET-0001-1465,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,25.05.2020
+rezervacianaisto.sk,ISKI-0001,H601191,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,18.08.2019
 rezervaciaservisu.sk,ISKI-0001,FORPSI-S547827,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,17.06.2020
+rezervacienaisto.sk,ISKI-0001,H601191,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,18.08.2019
 rezervuj-ubytovanie.sk,ELBI-0002,ELB-81DNVYK2NI8Z,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,23.03.2020
+rezervujnaisto.sk,ISKI-0001,H601191,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,18.08.2019
 rezervujsa.sk,ELBI-0002,MART-1358,OK,ns.inetadmin.sk,ns.inetadmin.eu,ns.inetadmin.cz,,19.10.2019
 rezervujservis.sk,ISKI-0001,FORPSI-S547827,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,17.06.2020
 rezortjason.sk,ELBI-0002,BLUE-0057,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,15.07.2020
@@ -3989,6 +3996,7 @@ sahara.sk,ISKI-0001,PETE-3887,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,ns.forp
 sakap.sk,ELBI-0002,ELB-TO5I9QKY57C1,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,21.01.2020
 sakavideo.sk,ELBI-0002,ELB-V9BL6GD3YV7Y,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,06.02.2020
 salon-krasy.sk,ELBI-0002,EFFE-0001-1465,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,28.02.2020
+salon-monika.sk,ISKI-0001,LADI-0977,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,ns.forpsi.us,09.08.2019
 salonevamaria.sk,ISKI-0001,MARE-0791,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,ns.forpsi.us,01.07.2020
 salonlinda.sk,ISKI-0001,MVIV-0002,OK,ns.forpsi.net,ns.forpsi.us,ns.forpsi.cz,ns.forpsi.cn,29.07.2020
 salonlubica.sk,ISKI-0001,UBIC-0072,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,ns.forpsi.cn,16.07.2020
@@ -4561,6 +4569,7 @@ ters.sk,ISKI-0001,PCEX-0003,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,ns.forpsi
 tesane.sk,ISKI-0001,FORPSI-S669090,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,30.06.2020
 testlab.sk,ELBI-0002,ELB-BKABTNH223P6,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,09.03.2020
 testosterons.sk,ELBI-0002,ELB-MRJ5BTNLU61S,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,03.11.2019
+tetra-fish.sk,ISKI-0001,MART-3231,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,10.04.2020
 tewa.sk,ELBI-0002,ELB-VUIRD94C4OMQ,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,09.09.2019
 text-link.sk,ZONE-0002,ZONERSK-1001853,OK,ns1.regzone.cz,ns1.regzone.info,ns1.regzone.de,,10.03.2020
 textlink.sk,ZONE-0002,ZONERSK-1001856,OK,ns1.regzone.cz,ns1.regzone.info,ns1.regzone.de,,26.10.2019
@@ -4918,6 +4927,7 @@ vipamlb.sk,ELBI-0002,WS-1779,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,
 vipoutlet.sk,ISKI-0001,FORPSI-S570288,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,,21.06.2020
 vippradlo.sk,ISKI-0001,H405851,OK,ns.forpsi.net,ns.forpsi.it,ns.forpsi.cz,ns.forpsi.us,16.06.2020
 vipsport.sk,ELBI-0002,ELB-6ZDLFYY0JPOG,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,02.03.2020
+vipsupport.sk,WEBS-0001,WS-32664,OK,ns1.websupport.sk,ns2.websupport.sk,ns3.websupport.sk,,14.07.2020
 viragoparts.sk,ZONE-0002,ZONERSK-1003091,OK,ns1.regzone.cz,ns1.regzone.info,ns1.regzone.de,,10.05.2020
 virtualnystat.sk,ELBI-0002,RAIN-0011,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,07.02.2020
 virtualpbx.sk,ELBI-0002,INTE-0077,OK,ns.inetadmin.eu,ns.inetadmin.sk,ns.inetadmin.cz,,22.08.2020

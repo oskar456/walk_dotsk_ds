@@ -33,6 +33,8 @@
 6sense.sk
 7spa.sk
 UNKNOWN_F856A16P0EDDGVDFIV0JKFGB6E8742PK
+UNKNOWN_IAPTF1K2I1V9E7RCII32FSJQNAFK37M8
+UNKNOWN_UFE9VIKUOHKTBBVUDLT9Q7VTDPFPB4PO
 a-repko.sk
 a3design.sk
 aa2c.sk
@@ -597,6 +599,7 @@ brngal.sk
 brngalova.sk
 broker-pool.sk
 brozphoto.sk
+brunes.sk
 bruxsafol-sv.sk
 brvniste.sk
 bscomp.sk
@@ -1572,6 +1575,7 @@ gajdosi.sk
 galanta.sk
 galbavy.sk
 galerialimes.sk
+galeriaumenia.sk
 galgabor.sk
 galileo-corporation.sk
 galileocorporation.sk
@@ -2950,6 +2954,7 @@ nahaku.sk
 nahradaskody.sk
 nairam.sk
 naj-sperkovnice.sk
+najdiservis.sk
 najizolacie.sk
 najlepsi-darcek.sk
 najletenky.sk
@@ -3824,6 +3829,7 @@ recuperoo.sk
 recyklonia.sk
 redstyleslovakia.sk
 reef.sk
+refil.sk
 refzbor.sk
 regaly-regaly.sk
 regalyregaly.sk
@@ -3894,8 +3900,11 @@ revycar.sk
 rewindow.sk
 rezanareklama.sk
 rezedova.sk
+rezervacianaisto.sk
 rezervaciaservisu.sk
+rezervacienaisto.sk
 rezervuj-ubytovanie.sk
+rezervujnaisto.sk
 rezervujsa.sk
 rezervujservis.sk
 rezortjason.sk
@@ -3989,6 +3998,7 @@ sahara.sk
 sakap.sk
 sakavideo.sk
 salon-krasy.sk
+salon-monika.sk
 salonevamaria.sk
 salonlinda.sk
 salonlubica.sk
@@ -4561,6 +4571,7 @@ ters.sk
 tesane.sk
 testlab.sk
 testosterons.sk
+tetra-fish.sk
 tewa.sk
 text-link.sk
 textlink.sk
@@ -4918,6 +4929,7 @@ vipamlb.sk
 vipoutlet.sk
 vippradlo.sk
 vipsport.sk
+vipsupport.sk
 viragoparts.sk
 virtualnystat.sk
 virtualpbx.sk
