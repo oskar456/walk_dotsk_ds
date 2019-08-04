@@ -184,9 +184,9 @@ def walk_nsec3(raindict, origin="sk"):
     resolver = dns.resolver.Resolver()
     nsset = resolver.query(f"{origin}.", dns.rdatatype.NS)
     nameserver = random.choice([ns.target.to_text() for ns in nsset.rrset])
-    nsipset = resolver.query(nameserver, dns.rdatatype.A)
-    nsip = random.choice([ns.address for ns in nsipset.rrset])
-    print("Using nameserver", nameserver, "IP", nsip)
+    # nsipset = resolver.query(nameserver, dns.rdatatype.A)
+    # nsip = random.choice([ns.address for ns in nsipset.rrset])
+    print("Using nameserver", nameserver)
     nsec3cache = dict()
     secureddomains = set()
     originhash = get_nsec3_hash(origin)
@@ -200,7 +200,7 @@ def walk_nsec3(raindict, origin="sk"):
             reqs += 1
             # print("Querying", d)
             q = dns.message.make_query(f"{d}.", "DS", want_dnssec=True)
-            res = dns.query.udp(q, nsip)
+            res = dns.query.tcp(q, nameserver)
             ns3rr = [
                 (rrset.name.labels[0].decode("ascii").upper(), rrset[0])
                 for rrset in res.authority
