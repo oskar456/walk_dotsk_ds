@@ -177,7 +177,7 @@ def dns_socket(host, port=53):
         except OSError:
             continue
         break
-    print("Connected to", sockaddr)
+    print("Connected to", sockaddr[0])
     try:
         yield s
     finally:
@@ -211,8 +211,6 @@ def _guess_next_domain(d, key):
 def walk_nsec3(raindict, origin="sk"):
     resolver = dns.resolver.Resolver()
     nsset = resolver.query(f"{origin}.", dns.rdatatype.NS)
-    nameserver = random.choice([ns.target.to_text() for ns in nsset.rrset])
-    print("Using nameserver", nameserver)
     nsec3cache = dict()
     secureddomains = set()
     originhash = get_nsec3_hash(origin)
@@ -220,53 +218,73 @@ def walk_nsec3(raindict, origin="sk"):
     h = originhash
     print("Walking NSEC3 hashes…\n", flush=True)
     iters, reqs, brokes, unknowns = 0, 0, 0, 0
-    with dns_socket(nameserver) as s:
-        while True:
-            iters += 1
-            if h not in nsec3cache:
-                reqs += 1
-                # print("Querying", d)
-                q = dns.message.make_query(f"{d}.", "DS", want_dnssec=True)
-                res = tcp_query(s, q)
-                ns3rr = [
-                    (rrset.name.labels[0].decode("ascii").upper(), rrset[0])
-                    for rrset in res.authority
-                    if rrset.rdtype == dns.rdatatype.NSEC3
-                ]
-                nsec3cache.update(ns3rr)
-                if [
-                    rrset
-                    for rrset in res.answer
-                    if rrset.rdtype == dns.rdatatype.DS
-                ]:
-                    print(d, "discovered directly")
-                    secureddomains.add(d)
-                    h = get_nsec3_hash(d)
-                    _, d = _next_odict_item(raindict, h)
-                    continue
-                if h not in nsec3cache and len(ns3rr) > 0:
-                    newh = [k for k, v in ns3rr if k > h][0]
-                    print("Broken NSEC3 chain: expected", h, "got", newh)
-                    brokes += 1
-                    h = newh
+    while True:
+        try:
+            nameserver = random.choice(
+                [ns.target.to_text() for ns in nsset.rrset],
+            )
+            print("Using nameserver", nameserver)
+            with dns_socket(nameserver) as s:
+                while True:
+                    iters += 1
+                    if h not in nsec3cache:
+                        reqs += 1
+                        # print("Querying", d)
+                        q = dns.message.make_query(
+                            f"{d}.", "DS", want_dnssec=True,
+                        )
+                        res = tcp_query(s, q)
+                        ns3rr = [
+                            (
+                                rrset.name.labels[0].decode(
+                                    "ascii",
+                                ).upper(), rrset[0],
+                            )
+                            for rrset in res.authority
+                            if rrset.rdtype == dns.rdatatype.NSEC3
+                        ]
+                        nsec3cache.update(ns3rr)
+                        if [
+                            rrset
+                            for rrset in res.answer
+                            if rrset.rdtype == dns.rdatatype.DS
+                        ]:
+                            print(d, "discovered directly")
+                            secureddomains.add(d)
+                            h = get_nsec3_hash(d)
+                            _, d = _next_odict_item(raindict, h)
+                            continue
+                        if h not in nsec3cache and len(ns3rr) > 0:
+                            newh = [k for k, v in ns3rr if k > h][0]
+                            print(
+                                "Broken NSEC3 chain: "
+                                "expected", h, "got", newh,
+                            )
+                            brokes += 1
+                            h = newh
 
-            if dict(nsec3cache[h].windows)[0][5] & 0x10:
-                # this owner has a DS record
-                if h in raindict:
-                    d = raindict[h]
-                else:
-                    d = f"UNKNOWN_{h}"
-                    unknowns += 1
-                print(d, flush=True)
-                secureddomains.add(d)
-            h = digest_to_ascii(nsec3cache[h].next)
-            if h == originhash:
-                break
-            if h in raindict:
-                _, d = _next_odict_item(raindict, h)
-            else:
-                d = _guess_next_domain(raindict, h)
-                print("Next domain guessed:", d)
+                    if dict(nsec3cache[h].windows)[0][5] & 0x10:
+                        # this owner has a DS record
+                        if h in raindict:
+                            d = raindict[h]
+                        else:
+                            d = f"UNKNOWN_{h}"
+                            unknowns += 1
+                        print(d, flush=True)
+                        secureddomains.add(d)
+                    h = digest_to_ascii(nsec3cache[h].next)
+                    if h == originhash:
+                        break
+                    if h in raindict:
+                        _, d = _next_odict_item(raindict, h)
+                    else:
+                        d = _guess_next_domain(raindict, h)
+                        print("Next domain guessed:", d)
+
+        except EOFError:
+            print("Connection lost, reconnecting…", flush=True)
+        finally:
+            break
 
     print("\nIterations: ", iters)
     print("DNS requests: ", reqs)
