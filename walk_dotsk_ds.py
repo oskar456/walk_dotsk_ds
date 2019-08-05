@@ -218,22 +218,22 @@ def walk_nsec3(raindict, origin="sk"):
     h = originhash
     print("Walking NSEC3 hashes…\n", flush=True)
     iters, reqs, brokes, unknowns = 0, 0, 0, 0
-    while True:
+    for retries in range(10):
         try:
             nameserver = random.choice(
                 [ns.target.to_text() for ns in nsset.rrset],
             )
             print("Using nameserver", nameserver)
             with dns_socket(nameserver) as s:
-                while True:
+                while iters == 0 or h != originhash:
                     iters += 1
                     if h not in nsec3cache:
-                        reqs += 1
                         # print("Querying", d)
                         q = dns.message.make_query(
                             f"{d}.", "DS", want_dnssec=True,
                         )
                         res = tcp_query(s, q)
+                        reqs += 1
                         ns3rr = [
                             (
                                 rrset.name.labels[0].decode(
@@ -273,24 +273,26 @@ def walk_nsec3(raindict, origin="sk"):
                         print(d, flush=True)
                         secureddomains.add(d)
                     h = digest_to_ascii(nsec3cache[h].next)
-                    if h == originhash:
-                        break
                     if h in raindict:
                         _, d = _next_odict_item(raindict, h)
                     else:
                         d = _guess_next_domain(raindict, h)
                         print("Next domain guessed:", d)
 
-        except EOFError:
+        except (EOFError, ConnectionError):
+            # Retry in case of server closing TCP connection
             print("Connection lost, reconnecting…", flush=True)
-        finally:
+        else:  # No exception, work is done
             break
+    else:
+        raise RuntimeError("Too many retries. Giving up.")
 
     print("\nIterations: ", iters)
     print("DNS requests: ", reqs)
     print("DS records discovered: ", len(secureddomains))
     print("Unknown domain names: ", unknowns)
     print("Broken NSEC3 chain incidents: ", brokes)
+    print("TCP connection retries: ", retries)
     with open("domains-secured.txt", "w") as outf:
         for d in sorted(secureddomains):
             outf.write(d)
