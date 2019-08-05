@@ -32,9 +32,15 @@
 4save.sk
 6sense.sk
 7spa.sk
+UNKNOWN_0DOE3TGJ6VOLOTP1M2VF862QFP84J0QU
+UNKNOWN_35N94KK8AQNQRH7L0SA8L235L858Q1QM
+UNKNOWN_L6GVCMQ0FNQJOCCU2KO59DE23AH36N4R
 UNKNOWN_M4RQVTRLB48I2A44EFSN2PSV41NK5SFN
+UNKNOWN_PALTN3HVBHFO1CR41OQVOSST3QMFFPK5
 UNKNOWN_RQ8S12MUSPIEPE5VU9JM4FO3HNFKUM1J
+UNKNOWN_RRQCPJH1BMA4EGNDE1F1E1B345FVKHL9
 UNKNOWN_T8HOR77PMMGDJT3K9A992NN01CPDLGA6
+UNKNOWN_TO42QQD4PUBF8GJASEQCITDA18N4B8T6
 a-repko.sk
 a3design.sk
 aa2c.sk
@@ -175,6 +181,7 @@ almond.sk
 alternatory-startery.sk
 altis.sk
 altisgroup.sk
+altisima.sk
 alucar.sk
 aluflex.sk
 aluring.sk
@@ -508,6 +515,7 @@ bioxa.sk
 birding.sk
 bitcoincard.sk
 bitcoinexchange.sk
+biterra.sk
 bittnertravel.sk
 bittorrent.sk
 bizovne.sk
@@ -602,7 +610,6 @@ brngal.sk
 brngalova.sk
 broker-pool.sk
 brozphoto.sk
-brunes.sk
 bruxsafol-sv.sk
 brvniste.sk
 bscomp.sk
@@ -1939,6 +1946,7 @@ investicnyguru.sk
 investmio.sk
 investujdoseba.sk
 invin.sk
+invipo.sk
 inypristup.sk
 iotindustries.sk
 ioutlet.sk
@@ -1955,6 +1963,7 @@ iqcrm.sk
 iqdesign.sk
 iqfaktury.sk
 iqon.sk
+iqosmag.sk
 iqtoner.sk
 iradiologia.sk
 irevizie.sk
@@ -3655,6 +3664,7 @@ prehladsprav.sk
 preliezkypredeti.sk
 premamy.sk
 premioportal.sk
+premiovepelety.sk
 premiumpilates.sk
 prenajmi.sk
 prenatal.sk
