@@ -12,6 +12,7 @@ import urllib.error
 import random
 import socket
 from contextlib import contextmanager
+import sys
 
 import dns.name
 from dns.rdtypes.ANY.NSEC3 import b32_normal_to_hex
@@ -213,6 +214,7 @@ def walk_nsec3(raindict, origin="sk"):
     nsset = resolver.query(f"{origin}.", dns.rdatatype.NS)
     nsec3cache = dict()
     secureddomains = set()
+    secureddomains2 = set()
     originhash = get_nsec3_hash(origin)
     d = origin
     h = originhash
@@ -250,12 +252,14 @@ def walk_nsec3(raindict, origin="sk"):
                             if rrset.rdtype == dns.rdatatype.DS
                         ]:
                             print(d, "discovered directly")
-                            secureddomains.add(d)
+                            if d in secureddomains2:
+                                sys.exit("Cycle detected!")
+                            secureddomains2.add(d)
                             h = get_nsec3_hash(d)
                             _, d = _next_odict_item(raindict, h)
                             continue
                         if h not in nsec3cache and len(ns3rr) > 0:
-                            newh = [k for k, v in ns3rr if k > h][0]
+                            newh = min([k for k, v in ns3rr if k > h])
                             print(
                                 "Broken NSEC3 chain: "
                                 "expected", h, "got", newh,
@@ -271,6 +275,8 @@ def walk_nsec3(raindict, origin="sk"):
                             d = f"UNKNOWN_{h}"
                             unknowns += 1
                         print(d, flush=True)
+                        if d in secureddomains:
+                            sys.exit("Cycle detected!")
                         secureddomains.add(d)
                     h = digest_to_ascii(nsec3cache[h].next)
                     if h in raindict:
@@ -287,6 +293,7 @@ def walk_nsec3(raindict, origin="sk"):
     else:
         raise RuntimeError("Too many retries. Giving up.")
 
+    secureddomains = secureddomains.union(secureddomains2)
     print("\nIterations: ", iters)
     print("DNS requests: ", reqs)
     print("DS records discovered: ", len(secureddomains))
