@@ -1,7 +1,7 @@
 #!/bin/bash
 
-git clone --branch=gh-pages https://${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git gh-pages 2>&1 > /dev/null
 pushd gh-pages
+git pull
 export OUTDIR="$(date +%Y-%m-%d)"
 mkdir -p "$OUTDIR"
 mv ../domains-secured.txt ../domains-secured.csv ../domains-stats.csv "$OUTDIR"/
