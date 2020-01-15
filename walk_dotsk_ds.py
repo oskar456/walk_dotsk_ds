@@ -13,6 +13,7 @@ import random
 import socket
 from contextlib import contextmanager
 import sys
+from itertools import tee, zip_longest
 
 import dns.name
 from dns.rdtypes.ANY.NSEC3 import b32_normal_to_hex
@@ -200,7 +201,7 @@ def _next_odict_item(d, key):
             try:
                 return next(i)
             except StopIteration:
-                return next(d.items())
+                return next(iter(d.items()))
 
 
 def _guess_next_domain(d, key):
@@ -218,7 +219,11 @@ def walk_nsec3(raindict, origin="sk"):
     originhash = get_nsec3_hash(origin)
     d = origin
     h = originhash
-    print("Walking NSEC3 hashes…\n", flush=True)
+    print("Walking NSEC3 hashes…")
+    print(
+        ".=indirect discovery d=direct discovery "
+        "u=unknown domain discovered\n",
+    )
     iters, reqs, brokes, unknowns = 0, 0, 0, 0
     for retries in range(10):
         try:
@@ -227,7 +232,8 @@ def walk_nsec3(raindict, origin="sk"):
             )
             print("Using nameserver", nameserver)
             with dns_socket(nameserver) as s:
-                while iters == 0 or h != originhash:
+                while iters == 0 or (h != originhash and d != origin):
+                    # print(f"i: {iters:6} q: {reqs:5} h: {h} d: {d}")
                     iters += 1
                     if h not in nsec3cache:
                         # print("Querying", d)
@@ -238,9 +244,8 @@ def walk_nsec3(raindict, origin="sk"):
                         reqs += 1
                         ns3rr = [
                             (
-                                rrset.name.labels[0].decode(
-                                    "ascii",
-                                ).upper(), rrset[0],
+                                rrset.name.labels[0].decode("ascii",).upper(),
+                                rrset[0],
                             )
                             for rrset in res.authority
                             if rrset.rdtype == dns.rdatatype.NSEC3
@@ -251,7 +256,8 @@ def walk_nsec3(raindict, origin="sk"):
                             for rrset in res.answer
                             if rrset.rdtype == dns.rdatatype.DS
                         ]:
-                            print(d, "discovered directly")
+                            # print(d, "discovered directly")
+                            print("d", end="", flush=True)
                             if d in secureddomains2:
                                 sys.exit("Cycle detected!")
                             secureddomains2.add(d)
@@ -261,7 +267,7 @@ def walk_nsec3(raindict, origin="sk"):
                         if h not in nsec3cache and len(ns3rr) > 0:
                             newh = min([k for k, v in ns3rr if k > h])
                             print(
-                                "Broken NSEC3 chain: "
+                                "\nBroken NSEC3 chain: "
                                 "expected", h, "got", newh,
                             )
                             brokes += 1
@@ -271,32 +277,47 @@ def walk_nsec3(raindict, origin="sk"):
                         # this owner has a DS record
                         if h in raindict:
                             d = raindict[h]
+                            print(".", end="", flush=True)
                         else:
                             d = f"UNKNOWN_{h}"
                             unknowns += 1
-                        print(d, flush=True)
+                            print("u", end="", flush=True)
+                        # print(d, flush=True)
                         if d in secureddomains:
                             sys.exit("Cycle detected!")
                         secureddomains.add(d)
                     h = digest_to_ascii(nsec3cache[h].next)
                     if h in raindict:
                         _, d = _next_odict_item(raindict, h)
+                        if d == origin:
+                            # Hack for corner case when
+                            # last domain in chain is signed.
+                            d = raindict[h]
                     else:
+                        print("\nHash not in rainbow table:", h)
                         d = _guess_next_domain(raindict, h)
                         print("Next domain guessed:", d)
 
         except (EOFError, ConnectionError):
             # Retry in case of server closing TCP connection
-            print("Connection lost, reconnecting…", flush=True)
+            print("\nConnection lost, reconnecting…", flush=True)
         else:  # No exception, work is done
             break
     else:
         raise RuntimeError("Too many retries. Giving up.")
 
+    indirectonly = secureddomains - secureddomains2
+    directonly = secureddomains2 - secureddomains
+    indirectanddirect = secureddomains & secureddomains2
     secureddomains = secureddomains.union(secureddomains2)
     print("\nIterations: ", iters)
     print("DNS requests: ", reqs)
     print("DS records discovered: ", len(secureddomains))
+    print(
+        f"{len(indirectonly)} discovered only indirectly, "
+        f"{len(directonly)} only directly, "
+        f"{len(indirectanddirect)} both ways.",
+    )
     print("Unknown domain names: ", unknowns)
     print("Broken NSEC3 chain incidents: ", brokes)
     print("TCP connection retries: ", retries)
@@ -304,6 +325,17 @@ def walk_nsec3(raindict, origin="sk"):
         for d in sorted(secureddomains):
             outf.write(d)
             outf.write("\n")
+    print(f"Walking {len(nsec3cache)} NSEC3 cache records…")
+    # print("\n".join((f"{k} {digest_to_ascii(v.next)}"
+    #       for k, v in nsec3cache.items())))
+    i1, i2 = tee(sorted(nsec3cache))
+    brokes = 0
+    for h1, h2 in zip_longest(i1, i2, fillvalue=next(i2)):
+        h1next = digest_to_ascii(nsec3cache[h1].next)
+        if h1next != h2:
+            # print(f"Broken chain, {h1next} expected, {h2} found.")
+            brokes += 1
+    print(f"Finished. {brokes} incidents found.")
     return secureddomains
 
 
