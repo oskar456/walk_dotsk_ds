@@ -1,0 +1,43 @@
+name: Walk NSEC chain
+
+on:
+   schedule:
+        - cron: "5 4 * * *"
+
+jobs:
+   do_walk:
+     runs-on: ubuntu-latest
+     steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+      - name: Install dnspython
+        run: pip install dnspython
+      - name: Do the walk
+        run: time python walk_dotsk_ds.py
+      - uses: actions/checkout@v2
+        name: Checkout gh-pages
+        with:
+           ref: gh-pages
+           path: gh-pages
+      - name: Deploy to gh-pages
+        run: |
+          pushd gh-pages
+          export OUTDIR="$(date +%Y-%m-%d)"
+          mkdir -p "$OUTDIR"
+          mv ../domains-secured.txt ../domains-secured.csv ../domains-stats.csv "$OUTDIR"/
+          pushd ..
+          python countstats.py
+          popd
+          mv ../daystats.csv ../daystats_gchart.json .
+          git rm -f current || true
+          ln -s "$OUTDIR" current
+          # Commit and push latest version
+          git add "$OUTDIR" current daystats.csv daystats_gchart.json
+          git config user.name  "GH Action"
+          git config user.email "deploy@invalid.email"
+          git commit -m "Updated $OUTDIR stats"
+          git push -q origin gh-pages 2>&1 > /dev/null
+          popd
