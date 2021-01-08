@@ -212,7 +212,8 @@ def _guess_next_domain(d, key):
 
 def walk_nsec3(raindict, origin="sk"):
     resolver = dns.resolver.Resolver()
-    nsset = resolver.query(f"{origin}.", dns.rdatatype.NS)
+    resolver.use_edns(0, 0, 1200)  # Workaround dnspython bug #546
+    nsset = resolver.resolve(f"{origin}.", dns.rdatatype.NS, search=False)
     nsec3cache = dict()
     secureddomains = set()
     secureddomains2 = set()
