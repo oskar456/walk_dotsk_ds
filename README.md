@@ -1,8 +1,7 @@
 DNSSEC-enabled domains counter for .SK TLD
 ==========================================
 
-[![Build
-Status](https://travis-ci.org/oskar456/walk_dotsk_ds.svg?branch=master)](https://travis-ci.org/oskar456/walk_dotsk_ds)
+![Walk NSEC chain](https://github.com/oskar456/walk_dotsk_ds/workflows/Walk%20NSEC%20chain/badge.svg)
 
 This script discovers which domain names in .SK TLD are secured by DNSSEC.
 Discovery is done in an efficient way by following the NSEC3 chain, as the
