@@ -170,8 +170,8 @@ def update_rainbow_dict(
 
 @contextmanager
 def dns_socket(host, port=53):
-    """Context manager for getting UDP DNS connection"""
-    ai = socket.getaddrinfo(host, port, type=socket.SOCK_DGRAM)
+    """Context manager for getting TCP DNS connection"""
+    ai = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
     for af, st, proto, _, sockaddr in ai:
         try:
             s = socket.socket(af, st, proto)
@@ -179,16 +179,16 @@ def dns_socket(host, port=53):
         except OSError:
             continue
         break
-    print("Sending to", sockaddr[0])
+    print("Connected to", sockaddr[0])
     try:
         yield s
     finally:
         s.close()
 
 
-def udp_query(socket, q):
-    dns.query.send_udp(socket, q.to_wire(), socket.getpeername())
-    r, _ = dns.query.receive_udp(socket, socket.getpeername())
+def tcp_query(socket, q):
+    dns.query.send_tcp(socket, q.to_wire())
+    r, _ = dns.query.receive_tcp(socket)
     if not q.is_response(r):
         raise dns.query.BadResponse
     return r
@@ -241,7 +241,7 @@ def walk_nsec3(raindict, origin="sk"):
                         q = dns.message.make_query(
                             f"{d}.", "DS", want_dnssec=True,
                         )
-                        res = udp_query(s, q)
+                        res = tcp_query(s, q)
                         reqs += 1
                         ns3rr = [
                             (
