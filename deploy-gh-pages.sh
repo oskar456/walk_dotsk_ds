@@ -4,7 +4,7 @@ git clone --branch=gh-pages https://${GITHUB_TOKEN}@github.com/${TRAVIS_REPO_SLU
 pushd gh-pages
 export OUTDIR="$(date +%Y-%m-%d)"
 mkdir -p "$OUTDIR"
-mv ../domains-secured.txt ../domains-secured.csv ../domains-stats.csv "$OUTDIR"/
+mv ../domains-secured.txt ../domains-stats.csv "$OUTDIR"/
 pushd ..
 python3 countstats.py
 popd

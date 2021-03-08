@@ -4,7 +4,7 @@ pushd gh-pages
 git pull
 export OUTDIR="$(date +%Y-%m-%d)"
 mkdir -p "$OUTDIR"
-mv ../domains-secured.txt ../domains-secured.csv ../domains-stats.csv "$OUTDIR"/
+mv ../domains-secured.txt ../domains-stats.csv "$OUTDIR"/
 pushd ..
 python3 countstats.py
 popd
